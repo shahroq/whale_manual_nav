@@ -14,6 +14,6 @@ Changelog
 = 1.1.0 =
 * First Release
 
-= 1.2.1 =
+= 1.2.0 =
 * Minor Fixes
 
