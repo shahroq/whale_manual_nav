@@ -33,26 +33,30 @@
 
 <script type="text/javascript">
 $(function() {
+    
     var nestableContainer = $('#nestableContainer');
     var _templateLIOpen = _.template($('#templateILOpen').html());
     var _templateLIClose = _.template($('#templateILClose').html());
     var _templateOLOpen = _.template($('#templateOLOpen').html());
     var _templateOLClose = _.template($('#templateOLClose').html());
 
+    //toggle betwwen internal/external url
     $('.dd').on('change', 'select[data-field=item-url-type-select]', function() {
         var container = $(this).closest('.dd-item');
+        var internalContainer = container.find('>.dd-content div[data-field=item-url-internal-container]');
+        var externalContainer = container.find('>.dd-content div[data-field=item-url-external-container]');
         switch($(this).val()) {
             case 'internal':
-                container.find('div[data-field=item-url-external-container]').hide();
-                container.find('div[data-field=item-url-internal-container]').show();
+                externalContainer.hide();
+                internalContainer.show();
                 break;
             case 'external':
-                container.find('div[data-field=item-url-internal-container]').hide();
-                container.find('div[data-field=item-url-external-container]').show();
+                internalContainer.hide();
+                externalContainer.show();
                 break;
             default:
-                container.find('div[data-field=item-url-internal-container]').hide();
-                container.find('div[data-field=item-url-external-container]').hide();
+                internalContainer.hide();
+                externalContainer.hide();
                 break;
         }
     });
@@ -79,6 +83,7 @@ $(function() {
         $('#navItems').val(rslt);
     };
 
+    //generate each nav item ui
     var generateItem = function(item) {
 
         var htmlCode = '';
@@ -115,7 +120,7 @@ $(function() {
     //fire url type selector
     nestableContainer.find('select[data-field=item-url-type-select]').trigger('change');
     //fire page selector
-    nestableContainer.find('[data-field=item-url-internal-wrapper]').each(function( ) {
+    nestableContainer.find('[data-field=item-url-internal-wrapper]').each(function() {
         cID = $(this).closest('.dd-item').data('item-url-internal');
         $(this).concretePageSelector({
             'cID': cID,
@@ -123,6 +128,7 @@ $(function() {
         }); 
     });
 
+    //add item to list
     $('a.ccm-add-menu-item').click(function(){
         var nestableCount = $('li.dd-item').length+1; 
         var newItem = JSON.parse('{"itemName":"Item '+nestableCount+'","itemUrlNewWindow":"0","itemUrlType":"internal","itemUrlInternal":"0","itemUrlExternal":"","id":'+nestableCount+'}');
@@ -149,7 +155,7 @@ $(function() {
     })
     .on('change', updateNavField); //it also fired when a form element change (textfield, select)
 
-    //fire when user select an internal page   
+    //fire when user select an internal page (update data atrributes)
     Concrete.event.bind('ConcreteSitemap', function(e, instance) {
     Concrete.event.bind('SitemapSelectPage', function(e, data) {
         if (data.instance == instance) {
@@ -159,13 +165,13 @@ $(function() {
     });
     });
 
-    //clear internal page: not working
+    //clear internal page: not working!
     $('.dd').on('click', 'a.ccm-item-selector-clear', function(e) {
         e.preventDefault();
         return false;
     });
 
-    //expand/collapse
+    //expand/collapse items
     $('.dd').on('click', 'a.show-hide', function(e) {
         e.preventDefault();
         var target = $(this).closest("div.well").find('.form-options');
@@ -179,6 +185,7 @@ $(function() {
         return false;
     });
 
+    //remove items
     $('.dd').on('click', 'a.remove-item', function(e) {
         e.preventDefault();    
         if(confirm("<?php echo t('Do you want to remove this item?') ?>")){
@@ -190,23 +197,25 @@ $(function() {
         return false;
     });
 
+    //copy selected internal page title to name field
     $('.dd').on('click', 'a.copy-page-title', function(e) {
         e.preventDefault();    
-        name = $(this).closest('.dd-item').find('.ccm-item-selector-item-selected-title').first().text();
+        name = $(this).closest('.dd-item').find('>.dd-content .ccm-item-selector-item-selected-title').text();
         $(this).closest('.dd-item').find('.item-name').first().val(name);
         updateNavField($('.dd'));
         updateHeader($(this).closest('.dd-item'));
         return false;
     });
 
+    //update item header based on 'Name' field
     var updateHeader = function(item) {   
-        item.find('.item-header').text(item.find('.item-name').val());
+        item.find('>.dd-content .item-header').text(item.find('>.dd-content .item-name').val());
     };
 
+    //fire updateHeader when 'Name' field changes
     $('.dd').on('change', 'input.item-name', function(e) {
         updateHeader($(this).closest('.dd-item'));
     });
-
 
 });
 </script>
@@ -220,7 +229,7 @@ $(function() {
                 data-item-url-external="<%=itemUrlExternal%>"
             >
                 <div class="dd-handle dd3-handle" title="<?php echo t('Move/Nest Item'); ?>"><i class="fa fa-arrows"></i></div>
-                <div class="dd3-content well">
+                <div class="dd-content dd3-content well">
                     <h2>
                         <span class="item-header"><%=itemName%></span>
                         <a href="#" class="show-hide pull-right" title="<?php echo t('Click to Show/Hide fields'); ?>"><i class="fa fa-chevron-down"></i></a>                    
