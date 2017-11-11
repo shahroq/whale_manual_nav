@@ -51,6 +51,7 @@ class Controller extends BlockController
     {
         $jh = Core::make('helper/json');
         $navItemsAr = ($this->navItems) ? $jh->decode($this->navItems) : array();
+        if(!is_array($navItemsAr)) $navItemsAr = array();
 
         //reindex ids
         $navItemsAr = $this->reindexNavItems($navItemsAr);
@@ -161,6 +162,7 @@ class Controller extends BlockController
         
         //Prep all data and put it into a clean structure so markup output is as simple as possible
         $navItemsAr = ($this->navItems) ? $jh->decode($this->navItems) : array();
+        if(!is_array($navItemsAr)) $navItemsAr = array();
         
         //get each item infos        
         foreach ($navItemsAr as $key => $item) {
