@@ -19,7 +19,7 @@ class Controller extends BlockController
     protected $btDefaultSet = 'navigation';
 
     protected $maxDepth = 5; //nestable max alllowed depth
-    
+
     protected $nav = array();
     protected $level;
     protected $cIDCurrent;
@@ -58,7 +58,7 @@ class Controller extends BlockController
 
         $this->set('navItemsAr', $navItemsAr );
         $this->set('maxDepth', $this->maxDepth );
-    }   
+    }
 
     private function reindexNavItems($navItemsAr, &$i=0)
     {
@@ -70,7 +70,7 @@ class Controller extends BlockController
             }
         }
         return $navItemsAr;
-    }   
+    }
 
     private function getNavItemInfo($item)
     {
@@ -79,7 +79,7 @@ class Controller extends BlockController
         $navItem = new \stdClass();
 
         $navItem->name = isset($item->itemName) ? $item->itemName : '*';
-        
+
         $navItem->itemUrlType = $item->itemUrlType;
         $navItem->cObj = false;
         $navItem->cID = false;
@@ -111,10 +111,10 @@ class Controller extends BlockController
                     $navItem->inPath = true;
                 } elseif (in_array($page->cID, $this->selectedPathCIDs)) {
                     $navItem->inPath = true;
-                }   
+                }
                 $attribute_class = $page->getAttribute('nav_item_class');
                 if (!empty($attribute_class)) $navItem->attrClass = $attribute_class;
-            }    
+            }
         }
 
         $navItem->target = isset($item->itemUrlNewWindow) ? $item->itemUrlNewWindow == 1 ? '_blank' : '_self' : '_self';
@@ -129,25 +129,33 @@ class Controller extends BlockController
             $navItem->hasSubmenu = true;
             $this->level++;
             foreach ($item->children as $key => $item) {
-                $this->getNavItemInfo($item);   
+                $this->getNavItemInfo($item);
             }
             $this->level--;
-            
+
         }
     }
 
     public function getNavItems()
     {
         $jh = Core::make('helper/json');
-        
+
         $this->level = 1;
         $this->cIDCurrent = Page::getCurrentPage()->getCollectionID();
         $this->selectedPathCIDs = array($this->cIDCurrent);
-        
+
         //store parent ids
         $parentCIDnotZero = true;
         $inspectC = Page::getCurrentPage();
-        $homePageID = $inspectC->getSiteHomePageID();
+
+        if (version_compare(\Config::get('concrete.version'), '8.0', '>=')) {
+            // if v8+
+            $homePageID = $inspectC->getSiteHomePageID();
+        } else {
+            // if not v8
+            $homePageID = HOME_CID;
+        }
+
         while ($parentCIDnotZero) {
             $cParentID = $inspectC->getCollectionParentID();
             if (!intval($cParentID)) {
@@ -159,12 +167,12 @@ class Controller extends BlockController
                 $inspectC = Page::getById($cParentID, 'ACTIVE');
             }
         }
-        
+
         //Prep all data and put it into a clean structure so markup output is as simple as possible
         $navItemsAr = ($this->navItems) ? $jh->decode($this->navItems) : array();
         if(!is_array($navItemsAr)) $navItemsAr = array();
-        
-        //get each item infos        
+
+        //get each item infos
         foreach ($navItemsAr as $key => $item) {
             $this->getNavItemInfo($item);
         }
@@ -172,10 +180,10 @@ class Controller extends BlockController
         //add extra infos to each item
         for ($i = 0; $i < count($this->nav); $i++) {
 
-            $current_level = $this->nav[$i]->level; 
+            $current_level = $this->nav[$i]->level;
             $prev_level = isset($this->nav[$i - 1]) ? $this->nav[$i - 1]->level : -1;
             $next_level = isset($this->nav[$i + 1]) ? $this->nav[$i + 1]->level : 1;
-            
+
             //Calculate difference between this item's level and next item's level so we know how many closing tags to output in the markup
             $this->nav[$i]->subDepth = $current_level - $next_level; //echo $current_level."-".$next_level."-".$this->nav[$i]->subDepth."<br>";
             //Calculate if this is the first item in its level (useful for CSS classes)
@@ -196,7 +204,7 @@ class Controller extends BlockController
             } //If loop ends before one of the "if" conditions is hit, then this is the last in its level (and $is_last_in_level stays true)
 
         }
-            
+
         return $this->nav;
-    }    
+    }
 }
