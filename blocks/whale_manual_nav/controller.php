@@ -10,8 +10,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
 class Controller extends BlockController
 {
     protected $btTable = 'btWhaleManualNav';
-    protected $btInterfaceWidth = 640;
-    protected $btInterfaceHeight = 400;
+    protected $btInterfaceWidth = 700;
+    protected $btInterfaceHeight = 600;
     protected $btCacheBlockOutput = true;
     protected $btCacheBlockOutputOnPost = true;
     protected $btCacheBlockOutputForRegisteredUsers = true;
