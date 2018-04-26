@@ -2,11 +2,11 @@
 
 <div class="ccm-tab-content" id="ccm-tab-content-mega-menu-menu" style="display: block">
 
-    <?php 
+    <?php
     $jh = Core::make('helper/json');
     ?>
     <input type='hidden' id='navItems' name='navItems' value='<?php echo $navItems ?>'>
-    
+
     <div style="margin-bottom: 20px;">
         <a href="#" class="btn btn-success btn-sm pull-right ccm-add-menu-item">
             <i class="fa fa-plus-circle"></i>
@@ -14,7 +14,7 @@
         </a>
         <div class="clearfix"></div>
     </div>
-    
+
     <div class="dd">
         <ol class="dd-list" id="nestableContainer">
         </ol>
@@ -33,7 +33,7 @@
 
 <script type="text/javascript">
 $(function() {
-    
+
     var nestableContainer = $('#nestableContainer');
     var _templateLIOpen = _.template($('#templateILOpen').html());
     var _templateLIClose = _.template($('#templateILClose').html());
@@ -61,14 +61,14 @@ $(function() {
         }
     });
 
-    var updateNavField = function(e) {   
+    var updateNavField = function(e) {
         //first set data-* attributes based on input/select fields
         $('.dd').find('input, select').each(function(){
             itemContainer = $(this).closest('.dd-item');
             value = $(this).val();
             name = $(this).attr('name');
             name = name.replace(/\[\]/g,'');
-            itemContainer.data(name, value); 
+            itemContainer.data(name, value);
         });
 
         var list = e.length ? e : $(e.target);
@@ -101,7 +101,7 @@ $(function() {
             htmlCode += _templateOLOpen();
             for(var i in item.children) {
                 htmlCode += generateItem(item.children[i])
-            }    
+            }
             htmlCode += _templateOLClose();
         }
 
@@ -125,12 +125,12 @@ $(function() {
         $(this).concretePageSelector({
             'cID': cID,
             'inputName': 'itemUrlInternal[]'
-        }); 
+        });
     });
 
     //add item to list
     $('a.ccm-add-menu-item').click(function(){
-        var nestableCount = $('li.dd-item').length+1; 
+        var nestableCount = $('li.dd-item').length+1;
         var newItem = JSON.parse('{"itemName":"Item '+nestableCount+'","itemUrlNewWindow":"0","itemUrlType":"internal","itemUrlInternal":"0","itemUrlExternal":"","id":'+nestableCount+'}');
         htmlCode = generateItem(newItem);
         nestableContainer.append(htmlCode);
@@ -149,7 +149,7 @@ $(function() {
     });
 
     //nestable
-    $('.dd').nestable({ 
+    $('.dd').nestable({
         maxDepth:<?php echo $maxDepth ?> ,
         group: 1
     })
@@ -187,9 +187,9 @@ $(function() {
 
     //remove items
     $('.dd').on('click', 'a.remove-item', function(e) {
-        e.preventDefault();    
+        e.preventDefault();
         if(confirm("<?php echo t('Do you want to remove this item?') ?>")){
-            $(this).closest(".dd-item").fadeOut(300, function(){ 
+            $(this).closest(".dd-item").fadeOut(300, function(){
                 $(this).closest(".dd-item").remove();
                 updateNavField($('.dd'));
             });
@@ -199,8 +199,14 @@ $(function() {
 
     //copy selected internal page title to name field
     $('.dd').on('click', 'a.copy-page-title', function(e) {
-        e.preventDefault();    
-        name = $(this).closest('.dd-item').find('>.dd-content .ccm-item-selector-item-selected-title').text();
+        e.preventDefault();
+        <?php if (version_compare(\Config::get('concrete.version'), '8.0', '>=')) { ?>
+            // if v8+
+            name = $(this).closest('.dd-item').find('>.dd-content .ccm-item-selector-item-selected-title').text();
+        <?php } else { ?>
+            // if not v8
+            name = $(this).closest('.dd-item').find('>.dd-content .ccm-page-selector-page-selected-title').text();
+        <?php } ?>
         $(this).closest('.dd-item').find('.item-name').first().val(name);
         updateNavField($('.dd'));
         updateHeader($(this).closest('.dd-item'));
@@ -208,7 +214,7 @@ $(function() {
     });
 
     //update item header based on 'Name' field
-    var updateHeader = function(item) {   
+    var updateHeader = function(item) {
         item.find('>.dd-content .item-header').text(item.find('>.dd-content .item-name').val());
     };
 
@@ -220,9 +226,9 @@ $(function() {
 });
 </script>
 <script type="text/template" id="templateILOpen">
-            <li class="dd-item dd3-item" 
-                data-id="<%=itemID%>" 
-                data-item-name="<%=itemName%>" 
+            <li class="dd-item dd3-item"
+                data-id="<%=itemID%>"
+                data-item-name="<%=itemName%>"
                 data-item-url-new-window="<%=itemUrlNewWindow%>"
                 data-item-url-type="<%=itemUrlType%>"
                 data-item-url-internal="<%=itemUrlInternal%>"
@@ -232,9 +238,9 @@ $(function() {
                 <div class="dd-content dd3-content well">
                     <h2>
                         <span class="item-header"><%=itemName%></span>
-                        <a href="#" class="show-hide pull-right" title="<?php echo t('Click to Show/Hide fields'); ?>"><i class="fa fa-chevron-down"></i></a>                    
+                        <a href="#" class="show-hide pull-right" title="<?php echo t('Click to Show/Hide fields'); ?>"><i class="fa fa-chevron-down"></i></a>
                         <a href="#" class="remove-item pull-right" title="<?php echo t('Click to Remove item'); ?>"><i class="fa fa-remove"></i></a>
-                    </h2>    
+                    </h2>
                     <div class="form-options" style="display:none;">
                         <div class="form-group" >
                             <label class="control-label"><?php echo t('Name'); ?></label>
@@ -271,7 +277,7 @@ $(function() {
                                 </div>
                             </div>
                         </div>
-                    </div>    
+                    </div>
                 </div>
 </script>
 <script type="text/template" id="templateILClose">
@@ -306,7 +312,7 @@ $(function() {
 .dd-empty,
 .dd-placeholder { display: block; position: relative; margin: 0; padding: 0; min-height: 20px; }
 
-.dd-handle { 
+.dd-handle {
     box-sizing: border-box; -moz-box-sizing: border-box;
 }
 .dd-handle:hover { }
@@ -330,9 +336,9 @@ $(function() {
  * Nestable Draggable Handles
  */
 
-.dd3-content { 
-    display: block; 
-    box-sizing: border-box; 
+.dd3-content {
+    display: block;
+    box-sizing: border-box;
     -moz-box-sizing: border-box;
 }
 .dd3-content:hover {}
@@ -341,9 +347,9 @@ $(function() {
 
 .dd3-item > button { margin-left: 30px; }
 
-.dd3-handle { 
-    position: absolute; margin: 0; left: 0; top: 0; cursor: pointer; 
-    width: 30px; 
+.dd3-handle {
+    position: absolute; margin: 0; left: 0; top: 0; cursor: pointer;
+    width: 30px;
     height: 38px;
     line-height: 38px;
     text-align: center;
