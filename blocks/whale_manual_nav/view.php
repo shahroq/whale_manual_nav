@@ -2,6 +2,7 @@
 <?php
 $navItems = $controller->getNavItems();
 $c = Page::getCurrentPage();
+$blockIdentifier = $controller->getBlockObject()->getProxyBlock() ? $controller->getBlockObject()->getProxyBlock()->getInstance()->getIdentifier() : $controller->getIdentifier();
 
 /**
  * The $navItems variable is an array of objects, each representing a nav menu item.
@@ -99,7 +100,7 @@ foreach ($navItems as $ni) {
 
 //*** Step 2 of 2: Output menu HTML ***/
 if (count($navItems) > 0) {
-    echo '<ul class="nav">'; //opens the top-level menu
+    echo '<ul class="nav" id="' . $blockIdentifier . '">'; //opens the top-level menu
 
     foreach ($navItems as $ni) {
         echo '<li class="' . $ni->classes . '">'; //opens a nav item
