@@ -17,3 +17,5 @@ Changelog
 = 1.2.0 =
 * Minor Fixes
 
+= 1.3.0 =
+* Add new link type (File)

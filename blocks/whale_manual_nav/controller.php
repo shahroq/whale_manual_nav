@@ -3,6 +3,7 @@ namespace Concrete\Package\WhaleManualNav\Block\WhaleManualNav;
 
 use Core;
 use Page;
+use File;
 use Concrete\Core\Block\BlockController;
 
 defined('C5_EXECUTE') or die("Access Denied.");
@@ -43,6 +44,7 @@ class Controller extends BlockController
     public function edit()
     {
         $this->requireAsset('core/sitemap');
+        $this->requireAsset('core/file-manager');
         $this->setVariables();
     }
 
@@ -115,6 +117,11 @@ class Controller extends BlockController
                 $attribute_class = $page->getAttribute('nav_item_class');
                 if (!empty($attribute_class)) $navItem->attrClass = $attribute_class;
             }
+        } elseif ($item->itemUrlType == 'file') {
+            $f = File::getByID((int)$item->itemUrlFile);
+            if($f) {
+                $navItem->url = (empty($f)) ? '' : $f->getDownloadURL();
+            }    
         }
 
         $navItem->target = isset($item->itemUrlNewWindow) ? $item->itemUrlNewWindow == 1 ? '_blank' : '_self' : '_self';

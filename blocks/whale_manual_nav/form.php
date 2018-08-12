@@ -40,23 +40,32 @@ $(function() {
     var _templateOLOpen = _.template($('#templateOLOpen').html());
     var _templateOLClose = _.template($('#templateOLClose').html());
 
-    //toggle betwwen internal/external url
+    //toggle betwwen internal/external/file url
     $('.dd').on('change', 'select[data-field=item-url-type-select]', function() {
         var container = $(this).closest('.dd-item');
         var internalContainer = container.find('>.dd-content div[data-field=item-url-internal-container]');
         var externalContainer = container.find('>.dd-content div[data-field=item-url-external-container]');
+        var fileContainer = container.find('>.dd-content div[data-field=item-url-file-container]');
         switch($(this).val()) {
             case 'internal':
-                externalContainer.hide();
                 internalContainer.show();
+                externalContainer.hide();
+                fileContainer.hide();
                 break;
             case 'external':
                 internalContainer.hide();
                 externalContainer.show();
+                fileContainer.hide();
+                break;
+            case 'file':
+                internalContainer.hide();
+                externalContainer.hide();
+                fileContainer.show();
                 break;
             default:
                 internalContainer.hide();
                 externalContainer.hide();
+                fileContainer.hide();
                 break;
         }
     });
@@ -95,6 +104,7 @@ $(function() {
             itemUrlType: item.itemUrlType,
             itemUrlInternal: item.itemUrlInternal,
             itemUrlExternal: item.itemUrlExternal,
+            itemUrlFile: item.itemUrlFile,
         });
 
         if(typeof item.children == 'object' && item.children.length>0) {
@@ -127,11 +137,20 @@ $(function() {
             'inputName': 'itemUrlInternal[]'
         });
     });
+    //fire file selector
+    nestableContainer.find('[data-field=item-url-file-wrapper]').each(function() {
+        fID = $(this).closest('.dd-item').data('item-url-file');
+        $(this).concreteFileSelector({
+            'chooseText': '<?php echo t('Choose File')?>',
+            'fID': fID,
+            'inputName': 'itemUrlFile[]'
+        });
+    });
 
     //add item to list
     $('a.ccm-add-menu-item').click(function(){
         var nestableCount = $('li.dd-item').length+1;
-        var newItem = JSON.parse('{"itemName":"Item '+nestableCount+'","itemUrlNewWindow":"0","itemUrlType":"internal","itemUrlInternal":"0","itemUrlExternal":"","id":'+nestableCount+'}');
+        var newItem = JSON.parse('{"itemName":"Item '+nestableCount+'","itemUrlNewWindow":"0","itemUrlType":"internal","itemUrlInternal":"0","itemUrlExternal":"","itemUrlFile":"0","id":'+nestableCount+'}');
         htmlCode = generateItem(newItem);
         nestableContainer.append(htmlCode);
 
@@ -141,6 +160,11 @@ $(function() {
 
         newItem.find('[data-field=item-url-internal-wrapper]').concretePageSelector({
            'inputName': 'itemUrlInternal[]'
+        });
+
+        newItem.find('[data-field=item-url-file-wrapper]').concreteFileSelector({
+           'chooseText': '<?php echo t('Choose File')?>',
+           'inputName': 'itemUrlFile[]'
         });
 
         nestableContainer.find('select[data-field=item-url-type-select]:last-child').trigger('change');
@@ -155,6 +179,7 @@ $(function() {
     })
     .on('change', updateNavField); //it also fired when a form element change (textfield, select)
 
+    //debug: Concrete.event.debug(true)
     //fire when user select an internal page (update data atrributes)
     Concrete.event.bind('ConcreteSitemap', function(e, instance) {
     Concrete.event.bind('SitemapSelectPage', function(e, data) {
@@ -164,6 +189,17 @@ $(function() {
         }
     });
     });
+
+    //fire when user select a file (update data atrributes)
+    Concrete.event.bind('FileManagerBeforeSelectFile', function(e, instance) {
+    Concrete.event.bind('FileManagerSelectFile', function(e, data) {
+        if (data.fID > 0) {
+            Concrete.event.unbind(e);
+            updateNavField($('.dd'));
+        }
+    });
+    });
+    
 
     //clear internal page: not working!
     $('.dd').on('click', 'a.ccm-item-selector-clear', function(e) {
@@ -213,6 +249,16 @@ $(function() {
         return false;
     });
 
+    //copy selected file title to name field
+    $('.dd').on('click', 'a.copy-file-title', function(e) {
+        e.preventDefault();
+        name = $(this).closest('.dd-item').find('>.dd-content .ccm-file-selector-file-selected-title div').text();
+        $(this).closest('.dd-item').find('.item-name').first().val(name);
+        updateNavField($('.dd'));
+        updateHeader($(this).closest('.dd-item'));
+        return false;
+    });
+
     //update item header based on 'Name' field
     var updateHeader = function(item) {
         item.find('>.dd-content .item-header').text(item.find('>.dd-content .item-name').val());
@@ -233,6 +279,7 @@ $(function() {
                 data-item-url-type="<%=itemUrlType%>"
                 data-item-url-internal="<%=itemUrlInternal%>"
                 data-item-url-external="<%=itemUrlExternal%>"
+                data-item-url-file="<%=itemUrlFile%>"
             >
                 <div class="dd-handle dd3-handle" title="<?php echo t('Move/Nest Item'); ?>"><i class="fa fa-arrows"></i></div>
                 <div class="dd-content dd3-content well">
@@ -261,9 +308,10 @@ $(function() {
                                 </div>
                                 <div class="col-xs-2" style="padding-right:0px;">
                                     <select data-field="item-url-type-select" name="itemUrlType[]" class="form-control" style="">
-                                        <option value="" <% if (!itemUrlType) { %>selected<% } %>><?php echo t('None')?></option>
+                                        <option value="" <% if (!itemUrlType) { %>selected<% } %>>[ <?php echo t('None')?> ]</option>
                                         <option value="internal" <% if (itemUrlType == 'internal') { %>selected<% } %>><?php echo t('Internal')?></option>
                                         <option value="external" <% if (itemUrlType == 'external') { %>selected<% } %>><?php echo t('External')?></option>
+                                        <option value="file" <% if (itemUrlType == 'file') { %>selected<% } %>><?php echo t('File')?></option>
                                     </select>
                                 </div>
                                 <div class="col-xs-8">
@@ -273,6 +321,10 @@ $(function() {
                                     </div>
                                     <div style="display: none;" data-field="item-url-external-container">
                                         <input type="text" name="itemUrlExternal[]" value="<%=itemUrlExternal%>" class="form-control" placeholder="http://">
+                                    </div>
+                                    <div style="display: none;" data-field="item-url-file-container">
+                                        <div data-field="item-url-file-wrapper" class="item-url-file-wrapper ccm-file-selector"></div>
+                                        <a href="#" class="btn btn-sm btn-default copy-file-title" title="<?php echo t('Copy file title to Name field') ?>"><i class="fa fa-mail-forward"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -365,6 +417,8 @@ $(function() {
 .dd small { font-size: 70%; }
 div.form-options { margin-top: 25px; }
 .item-url-internal-wrapper { margin-right: 50px!important; }
-.copy-page-title { position: absolute; top:0; right: 15px; line-height:1.75!important;}
+.item-url-file-wrapper { margin-right: 50px!important; }
+.item-url-file-wrapper div.ccm-file-selector-file-selected-thumbnail img { max-width: 20px!important;max-height: 20px!important; }
+.copy-page-title, .copy-file-title { position: absolute; top:0; right: 15px; line-height:1.75!important;}
 .ccm-page-selector { margin-top:0; } /*for 5.7 selector*/
 </style>

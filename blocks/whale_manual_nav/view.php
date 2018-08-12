@@ -28,6 +28,7 @@ $blockIdentifier = $controller->getBlockObject()->getProxyBlock() ? $controller-
  *	$navItem->isHome     : true/false -- if this nav item represents the home page
  *	$navItem->cID        : collection id of the page this nav item represents
  *	$navItem->cObj       : collection object of the page this nav item represents (use this if you need to access page properties and attributes that aren't already available in the $navItem object)
+ *  get attribute:       : $attr = (is_object($ni->cObj)) ? $ni->cObj->getAttribute('attr') : '';
  */
 
 /** For extra functionality, you can add the following page attributes to your site (via Dashboard > Pages & Themes > Attributes):
