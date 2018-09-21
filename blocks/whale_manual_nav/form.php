@@ -8,7 +8,7 @@
     <input type='hidden' id='navItems' name='navItems' value='<?php echo $navItems ?>'>
 
     <div style="margin-bottom: 20px;">
-        <a href="#" class="btn btn-success btn-sm pull-right ccm-add-menu-item">
+        <a class="btn btn-success btn-sm pull-right ccm-add-menu-item">
             <i class="fa fa-plus-circle"></i>
             <?php echo t('Add Item'); ?>
         </a>
@@ -21,7 +21,7 @@
     </div>
 
     <div style="margin-top: 20px;">
-        <a href="#" class="btn btn-success btn-sm pull-right ccm-add-menu-item">
+        <a class="btn btn-success btn-sm pull-right ccm-add-menu-item">
             <i class="fa fa-plus-circle"></i>
             <?php echo t('Add Item'); ?>
         </a>
@@ -285,8 +285,8 @@ $(function() {
                 <div class="dd-content dd3-content well">
                     <h2>
                         <span class="item-header"><%=itemName%></span>
-                        <a href="#" class="show-hide pull-right" title="<?php echo t('Click to Show/Hide fields'); ?>"><i class="fa fa-chevron-down"></i></a>
-                        <a href="#" class="remove-item pull-right" title="<?php echo t('Click to Remove item'); ?>"><i class="fa fa-remove"></i></a>
+                        <a class="show-hide pull-right" title="<?php echo t('Click to Show/Hide fields'); ?>"><i class="fa fa-chevron-down"></i></a>
+                        <a class="remove-item pull-right" title="<?php echo t('Click to Remove item'); ?>"><i class="fa fa-remove"></i></a>
                     </h2>
                     <div class="form-options" style="display:none;">
                         <div class="form-group" >
@@ -317,14 +317,14 @@ $(function() {
                                 <div class="col-xs-8">
                                     <div style="display: none;" data-field="item-url-internal-container">
                                         <div data-field="item-url-internal-wrapper" class="item-url-internal-wrapper"></div>
-                                        <a href="#" class="btn btn-sm btn-default copy-page-title" title="<?php echo t('Copy page title to Name field') ?>"><i class="fa fa-mail-forward"></i></a>
+                                        <a class="btn btn-sm btn-default copy-page-title" title="<?php echo t('Copy page title to Name field') ?>"><i class="fa fa-mail-forward"></i></a>
                                     </div>
                                     <div style="display: none;" data-field="item-url-external-container">
                                         <input type="text" name="itemUrlExternal[]" value="<%=itemUrlExternal%>" class="form-control" placeholder="http://">
                                     </div>
                                     <div style="display: none;" data-field="item-url-file-container">
                                         <div data-field="item-url-file-wrapper" class="item-url-file-wrapper ccm-file-selector"></div>
-                                        <a href="#" class="btn btn-sm btn-default copy-file-title" title="<?php echo t('Copy file title to Name field') ?>"><i class="fa fa-mail-forward"></i></a>
+                                        <a class="btn btn-sm btn-default copy-file-title" title="<?php echo t('Copy file title to Name field') ?>"><i class="fa fa-mail-forward"></i></a>
                                     </div>
                                 </div>
                             </div>

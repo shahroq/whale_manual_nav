@@ -101,7 +101,7 @@ foreach ($navItems as $ni) {
 
 //*** Step 2 of 2: Output menu HTML ***/
 if (count($navItems) > 0) {
-    echo '<ul class="nav" id="' . $blockIdentifier . '">'; //opens the top-level menu
+    echo '<ul class="nav nestable_manual_nav" id="' . $blockIdentifier . '">'; //opens the top-level menu
 
     foreach ($navItems as $ni) {
         echo '<li class="' . $ni->classes . '">'; //opens a nav item

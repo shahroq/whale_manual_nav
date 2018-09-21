@@ -19,3 +19,6 @@ Changelog
 
 = 1.3.0 =
 * Add new link type (File)
+
+= 1.3.1 =
+* Fix issue of disappearing the block editing UI modal when clicking "Add Item" button
