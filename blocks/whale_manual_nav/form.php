@@ -5,7 +5,7 @@
     <?php
     $jh = Core::make('helper/json');
     ?>
-    <input type='hidden' id='navItems' name='navItems' value='<?php echo $navItems ?>'>
+    <input type='hidden' id='navItems' name='navItems' value='<?php echo h($navItems) ?>'>
 
     <div style="margin-bottom: 20px;">
         <a class="btn btn-success btn-sm pull-right ccm-add-menu-item">
@@ -121,7 +121,7 @@ $(function() {
     }
 
     <?php foreach ($navItemsAr as $item) { ?>
-        itemStr = '<?php echo $jh->encode($item) ?>';
+        itemStr = '<?php echo addslashes($jh->encode($item)) ?>';
         itemJson = JSON.parse(itemStr);
         htmlCode = generateItem(itemJson);
         nestableContainer.append(htmlCode);
@@ -274,7 +274,7 @@ $(function() {
 <script type="text/template" id="templateILOpen">
             <li class="dd-item dd3-item"
                 data-id="<%=itemID%>"
-                data-item-name="<%=itemName%>"
+                data-item-name="<%=_.escape(itemName)%>"
                 data-item-url-new-window="<%=itemUrlNewWindow%>"
                 data-item-url-type="<%=itemUrlType%>"
                 data-item-url-internal="<%=itemUrlInternal%>"
@@ -284,14 +284,14 @@ $(function() {
                 <div class="dd-handle dd3-handle" title="<?php echo t('Move/Nest Item'); ?>"><i class="fa fa-arrows"></i></div>
                 <div class="dd-content dd3-content well">
                     <h2>
-                        <span class="item-header"><%=itemName%></span>
+                        <span class="item-header"><%=_.escape(itemName)%></span>
                         <a class="show-hide pull-right" title="<?php echo t('Click to Show/Hide fields'); ?>"><i class="fa fa-chevron-down"></i></a>
                         <a class="remove-item pull-right" title="<?php echo t('Click to Remove item'); ?>"><i class="fa fa-remove"></i></a>
                     </h2>
                     <div class="form-options" style="display:none;">
                         <div class="form-group" >
                             <label class="control-label"><?php echo t('Name'); ?></label>
-                            <input class="form-control ccm-input-text item-name" type="text" name="itemName[]" value="<%=itemName%>" />
+                            <input class="form-control ccm-input-text item-name" type="text" name="itemName[]" value="<%=_.escape(itemName)%>" />
                         </div>
                         <div class="form-group" >
                             <label class="control-label">

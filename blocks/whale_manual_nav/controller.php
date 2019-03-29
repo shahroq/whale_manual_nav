@@ -15,7 +15,7 @@ class Controller extends BlockController
     protected $btInterfaceHeight = 600;
     protected $btCacheBlockOutput = true;
     protected $btCacheBlockOutputOnPost = true;
-    protected $btCacheBlockOutputForRegisteredUsers = true;
+    protected $btCacheBlockOutputForRegisteredUsers = false;
     protected $btExportPageColumns = array('internalLinkCID');
     protected $btDefaultSet = 'navigation';
 
