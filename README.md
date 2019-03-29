@@ -22,3 +22,6 @@ Changelog
 
 = 1.3.1 =
 * Fix issue of disappearing the block editing UI modal when clicking "Add Item" button
+
+= 1.3.2 =
+* Fix issue of double quotes in title field breaking javascript
