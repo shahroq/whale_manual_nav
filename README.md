@@ -1,4 +1,4 @@
-[Concrete 5](https://www.concrete5.org) Nestable Manual Nav
+[Concrete5](https://www.concrete5.org) Nestable Manual Nav
 ===========================================================
 
 Description
