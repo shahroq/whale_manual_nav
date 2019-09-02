@@ -10,7 +10,7 @@
     <div style="margin-bottom: 20px;">
         <a class="btn btn-success btn-sm pull-right ccm-add-menu-item">
             <i class="fa fa-plus-circle"></i>
-            <?php echo t('Add Item'); ?>
+            <?php echo t('Add Item') ?>
         </a>
         <div class="clearfix"></div>
     </div>
@@ -23,7 +23,7 @@
     <div style="margin-top: 20px;">
         <a class="btn btn-success btn-sm pull-right ccm-add-menu-item">
             <i class="fa fa-plus-circle"></i>
-            <?php echo t('Add Item'); ?>
+            <?php echo t('Add Item') ?>
         </a>
         <div class="clearfix"></div>
     </div>
@@ -40,7 +40,7 @@ $(function() {
     var _templateOLOpen = _.template($('#templateOLOpen').html());
     var _templateOLClose = _.template($('#templateOLClose').html());
 
-    //toggle betwwen internal/external/file url
+    // toggle betwwen internal/external/file url
     $('.dd').on('change', 'select[data-field=item-url-type-select]', function() {
         var container = $(this).closest('.dd-item');
         var internalContainer = container.find('>.dd-content div[data-field=item-url-internal-container]');
@@ -71,7 +71,7 @@ $(function() {
     });
 
     var updateNavField = function(e) {
-        //first set data-* attributes based on input/select fields
+        // first set data-* attributes based on input/select fields
         $('.dd').find('input, select').each(function(){
             itemContainer = $(this).closest('.dd-item');
             value = $(this).val();
@@ -88,11 +88,11 @@ $(function() {
             list = list.closest('.dd');
         }
 
-        var rslt = window.JSON.stringify(list.nestable('serialize')); //console.log(rslt);
+        var rslt = window.JSON.stringify(list.nestable('serialize'));
         $('#navItems').val(rslt);
     };
 
-    //generate each nav item ui
+    // generate each nav item ui
     var generateItem = function(item) {
 
         var htmlCode = '';
@@ -127,7 +127,7 @@ $(function() {
         nestableContainer.append(htmlCode);
     <?php } ?>
 
-    //fire url type selector
+    // fire url type selector
     nestableContainer.find('select[data-field=item-url-type-select]').trigger('change');
     //fire page selector
     nestableContainer.find('[data-field=item-url-internal-wrapper]').each(function() {
@@ -137,17 +137,17 @@ $(function() {
             'inputName': 'itemUrlInternal[]'
         });
     });
-    //fire file selector
+    // fire file selector
     nestableContainer.find('[data-field=item-url-file-wrapper]').each(function() {
         fID = $(this).closest('.dd-item').data('item-url-file');
         $(this).concreteFileSelector({
-            'chooseText': '<?php echo t('Choose File')?>',
+            'chooseText': '<?php echo t('Choose File') ?>',
             'fID': fID,
             'inputName': 'itemUrlFile[]'
         });
     });
 
-    //add item to list
+    // add item to list
     $('a.ccm-add-menu-item').click(function(){
         var nestableCount = $('li.dd-item').length+1;
         var newItem = JSON.parse('{"itemName":"Item '+nestableCount+'","itemUrlNewWindow":"0","itemUrlType":"internal","itemUrlInternal":"0","itemUrlExternal":"","itemUrlFile":"0","id":'+nestableCount+'}');
@@ -163,7 +163,7 @@ $(function() {
         });
 
         newItem.find('[data-field=item-url-file-wrapper]').concreteFileSelector({
-           'chooseText': '<?php echo t('Choose File')?>',
+           'chooseText': '<?php echo t('Choose File') ?>',
            'inputName': 'itemUrlFile[]'
         });
 
@@ -172,12 +172,12 @@ $(function() {
         updateNavField($('.dd'));
     });
 
-    //nestable
+    // nestable
     $('.dd').nestable({
         maxDepth:<?php echo $maxDepth ?> ,
         group: 1
     })
-    .on('change', updateNavField); //it also fired when a form element change (textfield, select)
+    .on('change', updateNavField); // it also fires when a form element change (textfield, select)
 
     //debug: Concrete.event.debug(true)
     //fire when user select an internal page (update data atrributes)
@@ -190,7 +190,7 @@ $(function() {
     });
     });
 
-    //fire when user select a file (update data atrributes)
+    //fire when user selects a file (update data atrributes)
     Concrete.event.bind('FileManagerBeforeSelectFile', function(e, instance) {
     Concrete.event.bind('FileManagerSelectFile', function(e, data) {
         if (data.fID > 0) {
@@ -201,13 +201,13 @@ $(function() {
     });
     
 
-    //clear internal page: not working!
+    // clear internal page: not working!
     $('.dd').on('click', 'a.ccm-item-selector-clear', function(e) {
         e.preventDefault();
         return false;
     });
 
-    //expand/collapse items
+    // expand/collapse items
     $('.dd').on('click', 'a.show-hide', function(e) {
         e.preventDefault();
         var target = $(this).closest("div.well").find('.form-options');
@@ -221,7 +221,7 @@ $(function() {
         return false;
     });
 
-    //remove items
+    // remove items
     $('.dd').on('click', 'a.remove-item', function(e) {
         e.preventDefault();
         if(confirm("<?php echo t('Do you want to remove this item?') ?>")){
@@ -233,14 +233,14 @@ $(function() {
         return false;
     });
 
-    //copy selected internal page title to name field
+    // copy selected internal page title to name field
     $('.dd').on('click', 'a.copy-page-title', function(e) {
         e.preventDefault();
         <?php if (version_compare(\Config::get('concrete.version'), '8.0', '>=')) { ?>
-            // if v8+
+            // v8+
             name = $(this).closest('.dd-item').find('>.dd-content .ccm-item-selector-item-selected-title').text();
         <?php } else { ?>
-            // if not v8
+            // v7
             name = $(this).closest('.dd-item').find('>.dd-content .ccm-page-selector-page-selected-title').text();
         <?php } ?>
         $(this).closest('.dd-item').find('.item-name').first().val(name);
@@ -249,7 +249,7 @@ $(function() {
         return false;
     });
 
-    //copy selected file title to name field
+    // copy selected file title to name field
     $('.dd').on('click', 'a.copy-file-title', function(e) {
         e.preventDefault();
         name = $(this).closest('.dd-item').find('>.dd-content .ccm-file-selector-file-selected-title div').text();
@@ -259,12 +259,12 @@ $(function() {
         return false;
     });
 
-    //update item header based on 'Name' field
+    // update item header based on 'Name' field
     var updateHeader = function(item) {
         item.find('>.dd-content .item-header').text(item.find('>.dd-content .item-name').val());
     };
 
-    //fire updateHeader when 'Name' field changes
+    // fire updateHeader when 'Name' field changes
     $('.dd').on('change', 'input.item-name', function(e) {
         updateHeader($(this).closest('.dd-item'));
     });
@@ -281,12 +281,12 @@ $(function() {
                 data-item-url-external="<%=itemUrlExternal%>"
                 data-item-url-file="<%=itemUrlFile%>"
             >
-                <div class="dd-handle dd3-handle" title="<?php echo t('Move/Nest Item'); ?>"><i class="fa fa-arrows"></i></div>
+                <div class="dd-handle dd3-handle" title="<?php echo t('Move/Nest Item') ?>"><i class="fa fa-arrows"></i></div>
                 <div class="dd-content dd3-content well">
                     <h2>
                         <span class="item-header"><%=_.escape(itemName)%></span>
-                        <a class="show-hide pull-right" title="<?php echo t('Click to Show/Hide fields'); ?>"><i class="fa fa-chevron-down"></i></a>
-                        <a class="remove-item pull-right" title="<?php echo t('Click to Remove item'); ?>"><i class="fa fa-remove"></i></a>
+                        <a class="show-hide pull-right" title="<?php echo t('Click to Show/Hide fields') ?>"><i class="fa fa-chevron-down"></i></a>
+                        <a class="remove-item pull-right" title="<?php echo t('Click to Remove item') ?>"><i class="fa fa-remove"></i></a>
                     </h2>
                     <div class="form-options" style="display:none;">
                         <div class="form-group" >
@@ -295,23 +295,23 @@ $(function() {
                         </div>
                         <div class="form-group" >
                             <label class="control-label">
-                                <?php echo t('URL'); ?>
+                                <?php echo t('URL') ?>
                                 <small class="text-muted"><?php echo t('Target (New Windows)') . " | " . t('Type') . " | " . t('URL') ?></small>
                             </label>
                             <div class="row">
 
                                 <div class="col-xs-2" style="padding-right:0px;">
                                     <select data-field="item-url-new-window-select" name="itemUrlNewWindow[]" class="form-control" style="">
-                                        <option value="0" <% if (itemUrlNewWindow == 0) { %>selected<% } %>><?php echo t('No')?></option>
-                                        <option value="1" <% if (itemUrlNewWindow == 1) { %>selected<% } %>><?php echo t('Yes')?></option>
+                                        <option value="0" <% if (itemUrlNewWindow == 0) { %>selected<% } %>><?php echo t('No') ?></option>
+                                        <option value="1" <% if (itemUrlNewWindow == 1) { %>selected<% } %>><?php echo t('Yes') ?></option>
                                     </select>
                                 </div>
                                 <div class="col-xs-2" style="padding-right:0px;">
                                     <select data-field="item-url-type-select" name="itemUrlType[]" class="form-control" style="">
                                         <option value="" <% if (!itemUrlType) { %>selected<% } %>>[ <?php echo t('None')?> ]</option>
-                                        <option value="internal" <% if (itemUrlType == 'internal') { %>selected<% } %>><?php echo t('Internal')?></option>
-                                        <option value="external" <% if (itemUrlType == 'external') { %>selected<% } %>><?php echo t('External')?></option>
-                                        <option value="file" <% if (itemUrlType == 'file') { %>selected<% } %>><?php echo t('File')?></option>
+                                        <option value="internal" <% if (itemUrlType == 'internal') { %>selected<% } %>><?php echo t('Internal') ?></option>
+                                        <option value="external" <% if (itemUrlType == 'external') { %>selected<% } %>><?php echo t('External') ?></option>
+                                        <option value="file" <% if (itemUrlType == 'file') { %>selected<% } %>><?php echo t('File') ?></option>
                                     </select>
                                 </div>
                                 <div class="col-xs-8">
@@ -420,5 +420,5 @@ div.form-options { margin-top: 25px; }
 .item-url-file-wrapper { margin-right: 50px!important; }
 .item-url-file-wrapper div.ccm-file-selector-file-selected-thumbnail img { max-width: 20px!important;max-height: 20px!important; }
 .copy-page-title, .copy-file-title { position: absolute; top:0; right: 15px; line-height:1.75!important;}
-.ccm-page-selector { margin-top:0; } /*for 5.7 selector*/
+.ccm-page-selector { margin-top:0; } /** for 5.7 selector */
 </style>

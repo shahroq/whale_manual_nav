@@ -19,21 +19,22 @@ class Controller extends BlockController
     protected $btExportPageColumns = array('internalLinkCID');
     protected $btDefaultSet = 'navigation';
 
-    protected $maxDepth = 5; //nestable max alllowed depth
+    // nestable max alllowed depth
+    protected $maxDepth = 5;
 
     protected $nav = array();
     protected $level;
     protected $cIDCurrent;
     protected $selectedPathCIDs;
 
-    public function getBlockTypeDescription()
-    {
-        return t("Whale Manual Nav");
-    }
-
     public function getBlockTypeName()
     {
         return t("Nestable Manual Nav");
+    }
+
+    public function getBlockTypeDescription()
+    {
+        return t("Whale Manual Nav");
     }
 
     public function add()
@@ -48,7 +49,7 @@ class Controller extends BlockController
         $this->setVariables();
     }
 
-    //set vars use in view
+    // set vars for using in the view
     private function setVariables()
     {
         $jh = Core::make('helper/json');
@@ -130,7 +131,7 @@ class Controller extends BlockController
 
         $this->nav[] = $navItem;
 
-        //children:
+        // children
         $navItem->hasSubmenu = false;
         if (isset($item->children) && count($item->children)>0) {
             $navItem->hasSubmenu = true;
@@ -151,15 +152,15 @@ class Controller extends BlockController
         $this->cIDCurrent = Page::getCurrentPage()->getCollectionID();
         $this->selectedPathCIDs = array($this->cIDCurrent);
 
-        //store parent ids
+        // store parent ids
         $parentCIDnotZero = true;
         $inspectC = Page::getCurrentPage();
 
         if (version_compare(\Config::get('concrete.version'), '8.0', '>=')) {
-            // if v8+
+            // v8+
             $homePageID = $inspectC->getSiteHomePageID();
         } else {
-            // if not v8
+            // v7
             $homePageID = HOME_CID;
         }
 
@@ -169,46 +170,46 @@ class Controller extends BlockController
                 $parentCIDnotZero = false;
             } else {
                 if ($cParentID != $homePageID) {
-                    $this->selectedPathCIDs[] = $cParentID; //Don't want home page in nav-path-selected
+                    $this->selectedPathCIDs[] = $cParentID; // don't want home page in nav-path-selected
                 }
                 $inspectC = Page::getById($cParentID, 'ACTIVE');
             }
         }
 
-        //Prep all data and put it into a clean structure so markup output is as simple as possible
+        // prep all data and put them into a clean structure so markup output can be as simple as possible
         $navItemsAr = ($this->navItems) ? $jh->decode($this->navItems) : array();
         if(!is_array($navItemsAr)) $navItemsAr = array();
 
-        //get each item infos
+        // get each item info
         foreach ($navItemsAr as $key => $item) {
             $this->getNavItemInfo($item);
         }
 
-        //add extra infos to each item
+        // add extra info to each item
         for ($i = 0; $i < count($this->nav); $i++) {
 
             $current_level = $this->nav[$i]->level;
             $prev_level = isset($this->nav[$i - 1]) ? $this->nav[$i - 1]->level : -1;
             $next_level = isset($this->nav[$i + 1]) ? $this->nav[$i + 1]->level : 1;
 
-            //Calculate difference between this item's level and next item's level so we know how many closing tags to output in the markup
+            // calculate the difference between this item's level and next item's level so we know how many closing tags to output in the markup
             $this->nav[$i]->subDepth = $current_level - $next_level; //echo $current_level."-".$next_level."-".$this->nav[$i]->subDepth."<br>";
-            //Calculate if this is the first item in its level (useful for CSS classes)
+            // calculate if this is the first item in its level (useful for CSS classes)
             $this->nav[$i]->isFirst = $current_level > $prev_level;
-            //Calculate if this is the last item in its level (useful for CSS classes)
+            // calculate if this is the last item in its level (useful for CSS classes)
             $this->nav[$i]->isLast = true;
             for ($j = $i + 1; $j < count($this->nav); ++$j) {
                 if ($this->nav[$j]->level == $current_level) {
-                    //we found a subsequent item at this level (before this level "ended"), so this is NOT the last in its level
+                    // we found a subsequent item at this level (before this level 'ended'), so this is NOT the last in its level
                     $this->nav[$i]->isLast = false;
                     break;
                 }
                 if ($this->nav[$j]->level < $current_level) {
-                    //we found a previous level before any other items in this level, so this IS the last in its level
+                    // we found a previous level before any other items in this level, so this IS the last in its level
                     $this->nav[$i]->isLast = true;
                     break;
                 }
-            } //If loop ends before one of the "if" conditions is hit, then this is the last in its level (and $is_last_in_level stays true)
+            } // if loop ends before one of the "if" conditions is hit, then this is the last in its level (and $is_last_in_level stays true)
 
         }
 
