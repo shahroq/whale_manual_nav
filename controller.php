@@ -3,7 +3,7 @@
  * Nestable Manual Nav Add-on
  * Manually choose pages, links, and files for your navigation menu
  * 
- * @author 		Shahroq <shahroq \at\ yahoo.com>
+ * @author 	    Shahroq <shahroq \at\ yahoo.com>
  * @copyright  	Copyright 2017-2019 Shahroq
  * @link        https://github.com/shahroq/whale_manual_nav
  * @link        https://www.concrete5.org/marketplace/addons/nestable-manual-nav
