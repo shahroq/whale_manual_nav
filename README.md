@@ -26,6 +26,6 @@ Changelog
 = 1.3.2 =
 * Fix issue of double quotes in title field breaking javascript
 
-= 1.4 =
+= 1.4.0 =
 * minor clean-ups
 * Add duplicate icon
