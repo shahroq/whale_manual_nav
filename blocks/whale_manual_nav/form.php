@@ -72,7 +72,7 @@ $(function() {
 
     var updateNavField = function(e) {
         // first set data-* attributes based on input/select fields
-        $('.dd').find('input, select').each(function(){
+        $('.dd').find('input, select').each(function() {
             itemContainer = $(this).closest('.dd-item');
             value = $(this).val();
             name = $(this).attr('name');
@@ -107,7 +107,7 @@ $(function() {
             itemUrlFile: item.itemUrlFile,
         });
 
-        if(typeof item.children == 'object' && item.children.length>0) {
+        if(typeof item.children == 'object' && item.children.length > 0) {
             htmlCode += _templateOLOpen();
             for(var i in item.children) {
                 htmlCode += generateItem(item.children[i])
@@ -129,7 +129,7 @@ $(function() {
 
     // fire url type selector
     nestableContainer.find('select[data-field=item-url-type-select]').trigger('change');
-    //fire page selector
+    // fire page selector
     nestableContainer.find('[data-field=item-url-internal-wrapper]').each(function() {
         cID = $(this).closest('.dd-item').data('item-url-internal');
         $(this).concretePageSelector({
@@ -148,13 +148,13 @@ $(function() {
     });
 
     // add item to list
-    $('a.ccm-add-menu-item').click(function(){
-        var nestableCount = $('li.dd-item').length+1;
+    $('a.ccm-add-menu-item').click(function() {
+        var nestableCount = $('li.dd-item').length + 1;
         var newItem = JSON.parse('{"itemName":"Item '+nestableCount+'","itemUrlNewWindow":"0","itemUrlType":"internal","itemUrlInternal":"0","itemUrlExternal":"","itemUrlFile":"0","id":'+nestableCount+'}');
         htmlCode = generateItem(newItem);
         nestableContainer.append(htmlCode);
 
-        var newItem = $('.dd-item').last();
+        var newItem = $('.dd-item').last().hide().fadeIn();
         var thisModal = $(this).closest('.ui-dialog-content');
         thisModal.animate({scrollTop: newItem.offset().top},'slow');
 
@@ -174,13 +174,13 @@ $(function() {
 
     // nestable
     $('.dd').nestable({
-        maxDepth:<?php echo $maxDepth ?> ,
+        maxDepth:<?php echo $maxDepth ?>,
         group: 1
     })
     .on('change', updateNavField); // it also fires when a form element change (textfield, select)
 
-    //debug: Concrete.event.debug(true)
-    //fire when user select an internal page (update data atrributes)
+    // debug: Concrete.event.debug(true)
+    // fire when user select an internal page (update data atrributes)
     Concrete.event.bind('ConcreteSitemap', function(e, instance) {
     Concrete.event.bind('SitemapSelectPage', function(e, data) {
         if (data.instance == instance) {
@@ -190,7 +190,7 @@ $(function() {
     });
     });
 
-    //fire when user selects a file (update data atrributes)
+    // fire when user selects a file (update data atrributes)
     Concrete.event.bind('FileManagerBeforeSelectFile', function(e, instance) {
     Concrete.event.bind('FileManagerSelectFile', function(e, data) {
         if (data.fID > 0) {
@@ -224,11 +224,27 @@ $(function() {
     // remove items
     $('.dd').on('click', 'a.remove-item', function(e) {
         e.preventDefault();
-        if(confirm("<?php echo t('Do you want to remove this item?') ?>")){
+        if(confirm("<?php echo t('Do you want to remove this item?') ?>")) {
             $(this).closest(".dd-item").fadeOut(300, function(){
                 $(this).closest(".dd-item").remove();
                 updateNavField($('.dd'));
             });
+        }
+        return false;
+    });
+
+    // clone items
+    $('.dd').on('click', 'a.clone-item', function(e) {
+        e.preventDefault();
+        if(confirm("<?php echo t('Do you want to clone this item?') ?>")) {
+            $(this)
+                .closest(".dd-item")
+                .clone()
+                .attr("data-id", $('li.dd-item').length + 1)
+                .appendTo(".dd-list")
+                .hide()
+                .fadeIn();
+            updateNavField($('.dd'));
         }
         return false;
     });
@@ -287,6 +303,7 @@ $(function() {
                         <span class="item-header"><%=_.escape(itemName)%></span>
                         <a class="show-hide pull-right" title="<?php echo t('Click to Show/Hide fields') ?>"><i class="fa fa-chevron-down"></i></a>
                         <a class="remove-item pull-right" title="<?php echo t('Click to Remove item') ?>"><i class="fa fa-remove"></i></a>
+                        <a class="clone-item pull-right" title="<?php echo t('Click to Clone item') ?>"><i class="fa fa-clone"></i></a>
                     </h2>
                     <div class="form-options" style="display:none;">
                         <div class="form-group" >
@@ -353,7 +370,7 @@ $(function() {
 .dd-list .well h2, .dd-dragl .well h2 { margin-top: 0px!important; margin-bottom: 0px!important; font-size: 15px!important; font-weight: bold; padding-left: 30px;}
 .dd-list .well h2 .item-header { color: #555; display: inline-table;}
 .dd-list .nest-item { cursor:ew-resize; margin-right: 5px;}
-.dd-list .remove-item, .dd-list .show-hide { cursor:pointer; margin-left: 5px;}
+.dd-list .clone-item, .dd-list .remove-item, .dd-list .show-hide { cursor:pointer; margin-left: 5px;}
 .dd-list hr, .dd-dragl hr { margin: 15px 0 15px 0!important; }
 
 .dd-list { display: block; position: relative; margin: 0; padding: 0; list-style: none; }

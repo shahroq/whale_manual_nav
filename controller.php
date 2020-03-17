@@ -2,6 +2,7 @@
 /**
  * Nestable Manual Nav Add-on
  * Manually choose pages, links, and files for your navigation menu
+ * For concrete5
  * 
  * @author 	    Shahroq <shahroq \at\ yahoo.com>
  * @copyright  	Copyright 2017-2019 Shahroq
@@ -21,7 +22,7 @@ class Controller extends Package
 {
     protected $pkgHandle = 'whale_manual_nav';
     protected $appVersionRequired = '5.7.3';
-    protected $pkgVersion = '1.3.3';
+    protected $pkgVersion = '1.4.0';
 
     public function getPackageName()
     {
@@ -37,7 +38,7 @@ class Controller extends Package
     {
         $pkg = parent::install();
 
-        //install block
+        // install block
         BlockType::installBlockType('whale_manual_nav', $pkg);
     }
 
@@ -45,7 +46,7 @@ class Controller extends Package
     {
         parent::uninstall();
 
-        //drop tables
+        // drop tables
         $db = Database::connection();
         $db->executeQuery('DROP TABLE IF EXISTS `btWhaleManualNav`');
     }

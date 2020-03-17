@@ -54,21 +54,21 @@ class Controller extends BlockController
     {
         $jh = Core::make('helper/json');
         $navItemsAr = ($this->navItems) ? $jh->decode($this->navItems) : array();
-        if(!is_array($navItemsAr)) $navItemsAr = array();
+        if (!is_array($navItemsAr)) $navItemsAr = array();
 
         //reindex ids
         $navItemsAr = $this->reindexNavItems($navItemsAr);
 
-        $this->set('navItemsAr', $navItemsAr );
-        $this->set('maxDepth', $this->maxDepth );
+        $this->set('navItemsAr', $navItemsAr);
+        $this->set('maxDepth', $this->maxDepth);
     }
 
-    private function reindexNavItems($navItemsAr, &$i=0)
+    private function reindexNavItems($navItemsAr, &$i = 0)
     {
         foreach ($navItemsAr as $key => $item) {
             $i++;
             $navItemsAr[$key]->id = $i;
-            if (isset($item->children) && is_array($item->children) && count($item->children)>0){
+            if (isset($item->children) && is_array($item->children) && count($item->children) > 0) {
                 $this->reindexNavItems($item->children, $i);
             }
         }
@@ -91,10 +91,10 @@ class Controller extends BlockController
         $navItem->isCurrent = false;
         $navItem->inPath = false;
         $navItem->attrClass = '';
-        if ($item->itemUrlType == 'external'){
+        if ($item->itemUrlType == 'external') {
             $navItem->url = $item->itemUrlExternal;
         } elseif ($item->itemUrlType == 'internal') {
-            $page = Page::getByID((int)$item->itemUrlInternal);
+            $page = Page::getByID((int) $item->itemUrlInternal);
             if (isset($page->cID)) {
                 $navItem->cObj = $page;
                 $navItem->cID = $page->cID;
@@ -119,10 +119,10 @@ class Controller extends BlockController
                 if (!empty($attribute_class)) $navItem->attrClass = $attribute_class;
             }
         } elseif ($item->itemUrlType == 'file') {
-            $f = File::getByID((int)$item->itemUrlFile);
-            if($f) {
+            $f = File::getByID((int) $item->itemUrlFile);
+            if ($f) {
                 $navItem->url = (empty($f)) ? '' : $f->getDownloadURL();
-            }    
+            }
         }
 
         $navItem->target = isset($item->itemUrlNewWindow) ? $item->itemUrlNewWindow == 1 ? '_blank' : '_self' : '_self';
@@ -133,14 +133,13 @@ class Controller extends BlockController
 
         // children
         $navItem->hasSubmenu = false;
-        if (isset($item->children) && count($item->children)>0) {
+        if (isset($item->children) && count($item->children) > 0) {
             $navItem->hasSubmenu = true;
             $this->level++;
             foreach ($item->children as $key => $item) {
                 $this->getNavItemInfo($item);
             }
             $this->level--;
-
         }
     }
 
@@ -178,7 +177,7 @@ class Controller extends BlockController
 
         // prep all data and put them into a clean structure so markup output can be as simple as possible
         $navItemsAr = ($this->navItems) ? $jh->decode($this->navItems) : array();
-        if(!is_array($navItemsAr)) $navItemsAr = array();
+        if (!is_array($navItemsAr)) $navItemsAr = array();
 
         // get each item info
         foreach ($navItemsAr as $key => $item) {
