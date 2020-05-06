@@ -22,7 +22,7 @@ class Controller extends Package
 {
     protected $pkgHandle = 'whale_manual_nav';
     protected $appVersionRequired = '5.7.3';
-    protected $pkgVersion = '1.4.0';
+    protected $pkgVersion = '1.4.1';
 
     public function getPackageName()
     {

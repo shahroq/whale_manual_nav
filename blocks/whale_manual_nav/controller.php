@@ -1,4 +1,5 @@
 <?php
+
 namespace Concrete\Package\WhaleManualNav\Block\WhaleManualNav;
 
 use Core;
@@ -56,7 +57,7 @@ class Controller extends BlockController
         $navItemsAr = ($this->navItems) ? $jh->decode($this->navItems) : array();
         if (!is_array($navItemsAr)) $navItemsAr = array();
 
-        //reindex ids
+        // reindex ids
         $navItemsAr = $this->reindexNavItems($navItemsAr);
 
         $this->set('navItemsAr', $navItemsAr);

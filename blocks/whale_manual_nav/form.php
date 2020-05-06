@@ -81,14 +81,14 @@ $(function() {
         });
 
         var list = e.length ? e : $(e.target);
-        if(e.length) {
+        if (e.length) {
             var list = e;
         } else {
             var list = $(e.target);
             list = list.closest('.dd');
         }
 
-        var rslt = window.JSON.stringify(list.nestable('serialize'));
+        var rslt = JSON.stringify(list.nestable('serialize'));
         $('#navItems').val(rslt);
     };
 
@@ -137,11 +137,12 @@ $(function() {
             'inputName': 'itemUrlInternal[]'
         });
     });
+
     // fire file selector
     nestableContainer.find('[data-field=item-url-file-wrapper]').each(function() {
         fID = $(this).closest('.dd-item').data('item-url-file');
         $(this).concreteFileSelector({
-            'chooseText': '<?php echo t('Choose File') ?>',
+            'chooseText': '<?php echo t("Choose File") ?>',
             'fID': fID,
             'inputName': 'itemUrlFile[]'
         });
@@ -210,12 +211,12 @@ $(function() {
     // expand/collapse items
     $('.dd').on('click', 'a.show-hide', function(e) {
         e.preventDefault();
-        var target = $(this).closest("div.well").find('.form-options');
-        if (target.is(":visible")) {
-            $(this).find("i").attr("class", "fa fa-chevron-down");
+        var target = $(this).closest('div.well').find('.form-options');
+        if (target.is(':visible')) {
+            $(this).find('i').attr('class', 'fa fa-chevron-down');
             target.stop(true, true).slideUp();
         } else {
-            $(this).find("i").attr("class", "fa fa-chevron-up");
+            $(this).find('i').attr('class', 'fa fa-chevron-up');
             target.stop(true, true).slideDown();
         }
         return false;
@@ -224,9 +225,9 @@ $(function() {
     // remove items
     $('.dd').on('click', 'a.remove-item', function(e) {
         e.preventDefault();
-        if(confirm("<?php echo t('Do you want to remove this item?') ?>")) {
-            $(this).closest(".dd-item").fadeOut(300, function(){
-                $(this).closest(".dd-item").remove();
+        if(confirm('<?php echo t("Do you want to remove this item?") ?>')) {
+            $(this).closest('.dd-item').fadeOut(300, function(){
+                $(this).closest('.dd-item').remove();
                 updateNavField($('.dd'));
             });
         }
@@ -236,12 +237,12 @@ $(function() {
     // clone items
     $('.dd').on('click', 'a.clone-item', function(e) {
         e.preventDefault();
-        if(confirm("<?php echo t('Do you want to clone this item?') ?>")) {
+        if(confirm('<?php echo t("Do you want to clone this item?") ?>')) {
             $(this)
-                .closest(".dd-item")
-                .clone()
-                .attr("data-id", $('li.dd-item').length + 1)
-                .appendTo(".dd-list")
+                .closest('.dd-item')
+                .clone(true)
+                .attr('data-id', $('li.dd-item').length + 1)
+                .appendTo($(this).closest('.dd-list'))
                 .hide()
                 .fadeIn();
             updateNavField($('.dd'));
