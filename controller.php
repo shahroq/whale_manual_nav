@@ -4,8 +4,8 @@
  * Manually choose pages, links, and files for your navigation menu
  * For concrete5
  * 
- * @author 	    Shahroq <shahroq \at\ yahoo.com>
- * @copyright  	Copyright 2017-2019 Shahroq
+ * @author      Shahroq <shahroq \at\ yahoo.com>
+ * @copyright   Copyright 2017-2019 Shahroq
  * @link        https://github.com/shahroq/whale_manual_nav
  * @link        https://www.concrete5.org/marketplace/addons/nestable-manual-nav
  */
