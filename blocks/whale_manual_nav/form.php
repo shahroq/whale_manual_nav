@@ -244,7 +244,8 @@ $(function() {
                 .attr('data-id', $('li.dd-item').length + 1)
                 .appendTo($(this).closest('.dd-list'))
                 .hide()
-                .fadeIn();
+                .fadeIn()
+                .find('ol').remove(); // do not clone children
             updateNavField($('.dd'));
         }
         return false;
