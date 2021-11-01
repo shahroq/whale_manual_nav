@@ -148,6 +148,7 @@ class Controller extends BlockController
     {
         $jh = Core::make('helper/json');
 
+        $this->nav = array();
         $this->level = 1;
         $this->cIDCurrent = Page::getCurrentPage()->getCollectionID();
         $this->selectedPathCIDs = array($this->cIDCurrent);
