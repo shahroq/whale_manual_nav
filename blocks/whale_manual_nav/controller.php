@@ -2,12 +2,9 @@
 
 namespace Concrete\Package\WhaleManualNav\Block\WhaleManualNav;
 
-use Core;
-use Page;
-use File;
+use Concrete\Core\File\File;
+use Concrete\Core\Page\Page;
 use Concrete\Core\Block\BlockController;
-
-defined('C5_EXECUTE') or die("Access Denied.");
 
 class Controller extends BlockController
 {
@@ -53,7 +50,8 @@ class Controller extends BlockController
     // set vars for using in the view
     private function setVariables()
     {
-        $jh = Core::make('helper/json');
+        $jh = $this->app->make('helper/json');
+        
         $navItemsAr = ($this->navItems) ? $jh->decode($this->navItems) : array();
         if (!is_array($navItemsAr)) $navItemsAr = array();
 
@@ -78,7 +76,7 @@ class Controller extends BlockController
 
     private function getNavItemInfo($item)
     {
-        $nh = Core::make('helper/navigation');
+        $nh = $this->app->make('helper/navigation');
 
         $navItem = new \stdClass();
 
@@ -146,7 +144,7 @@ class Controller extends BlockController
 
     public function getNavItems()
     {
-        $jh = Core::make('helper/json');
+        $jh = $this->app->make('helper/json');
 
         $this->nav = array();
         $this->level = 1;

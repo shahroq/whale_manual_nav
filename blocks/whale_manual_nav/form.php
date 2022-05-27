@@ -1,10 +1,12 @@
-<?php defined('C5_EXECUTE') or die("Access Denied."); ?>
+<?php 
+defined('C5_EXECUTE') or die("Access Denied."); 
+
+$app = \Concrete\Core\Support\Facade\Application::getFacadeApplication();
+$jh = $app->make('helper/json');
+?>
 
 <div class="ccm-tab-content" id="ccm-tab-content-mega-menu-menu" style="display: block">
 
-    <?php
-    $jh = Core::make('helper/json');
-    ?>
     <input type='hidden' id='navItems' name='navItems' value='<?php echo h($navItems) ?>'>
 
     <div style="margin-bottom: 20px;">
@@ -27,7 +29,6 @@
         </a>
         <div class="clearfix"></div>
     </div>
-
 
 </div>
 

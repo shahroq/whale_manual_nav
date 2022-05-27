@@ -5,16 +5,15 @@
  * For concrete5
  * 
  * @author      Shahroq <shahroq \at\ yahoo.com>
- * @copyright   Copyright 2017-2019 Shahroq
+ * @copyright   Copyright 2017-2022 Shahroq
  * @link        https://github.com/shahroq/whale_manual_nav
  * @link        https://www.concrete5.org/marketplace/addons/nestable-manual-nav
  */
 
 namespace Concrete\Package\WhaleManualNav;
 
-use Package;
-use Database;
-use BlockType;
+use Concrete\Core\Block\BlockType\BlockType;
+use Concrete\Core\Package\Package;
 
 defined('C5_EXECUTE') or die(_("Access Denied."));
 
@@ -45,9 +44,9 @@ class Controller extends Package
     public function uninstall()
     {
         parent::uninstall();
-
+        $db = $this->app->make('database')->connection();
+        
         // drop tables
-        $db = Database::connection();
         $db->executeQuery('DROP TABLE IF EXISTS `btWhaleManualNav`');
     }
 }

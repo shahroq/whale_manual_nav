@@ -124,6 +124,6 @@ if (count($navItems) > 0) {
     echo '</ul>'; //closes the top-level menu
 } elseif (is_object($c) && $c->isEditMode()) {
     ?>
-    <div class="ccm-edit-mode-disabled-item"><?php echo t('Empty Nestable Manual Nav Block.')?></div>
+    <div class="ccm-edit-mode-disabled-item"><?php echo t('Empty Nestable Manual Nav Block.') ?></div>
 <?php
 }
