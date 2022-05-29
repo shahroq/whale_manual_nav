@@ -9,12 +9,11 @@ $jh = $app->make('helper/json');
 
     <input type='hidden' id='navItems' name='navItems' value='<?php echo h($navItems) ?>'>
 
-    <div style="margin-bottom: 20px;">
-        <a class="btn btn-success btn-sm pull-right ccm-add-menu-item">
-            <i class="fa fa-plus-circle"></i>
+    <div style="margin-bottom: 20px;" class="d-flex justify-content-end-">
+        <a class="btn btn-success btn-sm ccm-add-menu-item ms-auto">
+            <i class="fas fa-plus-circle"></i>
             <?php echo t('Add Item') ?>
         </a>
-        <div class="clearfix"></div>
     </div>
 
     <div class="dd">
@@ -22,12 +21,11 @@ $jh = $app->make('helper/json');
         </ol>
     </div>
 
-    <div style="margin-top: 20px;">
-        <a class="btn btn-success btn-sm pull-right ccm-add-menu-item">
-            <i class="fa fa-plus-circle"></i>
+    <div style="margin-top: 20px;" class="d-flex justify-content-end">
+        <a class="btn btn-success btn-sm ccm-add-menu-item">
+            <i class="fas fa-plus-circle"></i>
             <?php echo t('Add Item') ?>
         </a>
-        <div class="clearfix"></div>
     </div>
 
 </div>
@@ -140,6 +138,7 @@ $(function() {
     });
 
     // fire file selector
+    /*
     nestableContainer.find('[data-field=item-url-file-wrapper]').each(function() {
         fID = $(this).closest('.dd-item').data('item-url-file');
         $(this).concreteFileSelector({
@@ -148,6 +147,7 @@ $(function() {
             'inputName': 'itemUrlFile[]'
         });
     });
+    */
 
     // add item to list
     $('a.ccm-add-menu-item').click(function() {
@@ -159,15 +159,16 @@ $(function() {
         var newItem = $('.dd-item').last().hide().fadeIn();
         var thisModal = $(this).closest('.ui-dialog-content');
         thisModal.animate({scrollTop: newItem.offset().top},'slow');
-
         newItem.find('[data-field=item-url-internal-wrapper]').concretePageSelector({
            'inputName': 'itemUrlInternal[]'
         });
-
+        /*
+        // not available on v9? #tocheck
         newItem.find('[data-field=item-url-file-wrapper]').concreteFileSelector({
            'chooseText': '<?php echo t('Choose File') ?>',
            'inputName': 'itemUrlFile[]'
         });
+        */
 
         nestableContainer.find('select[data-field=item-url-type-select]:last-child').trigger('change');
 
@@ -192,6 +193,7 @@ $(function() {
     });
     });
 
+    /*
     // fire when user selects a file (update data atrributes)
     Concrete.event.bind('FileManagerBeforeSelectFile', function(e, instance) {
     Concrete.event.bind('FileManagerSelectFile', function(e, data) {
@@ -201,7 +203,7 @@ $(function() {
         }
     });
     });
-    
+    */
 
     // clear internal page: not working!
     $('.dd').on('click', 'a.ccm-item-selector-clear', function(e) {
@@ -214,10 +216,10 @@ $(function() {
         e.preventDefault();
         var target = $(this).closest('div.wmn-content').find('.form-options');
         if (target.is(':visible')) {
-            $(this).find('i').attr('class', 'fa fa-chevron-down');
+            $(this).find('i').attr('class', 'fas fa-chevron-down');
             target.stop(true, true).slideUp();
         } else {
-            $(this).find('i').attr('class', 'fa fa-chevron-up');
+            $(this).find('i').attr('class', 'fas fa-chevron-up');
             target.stop(true, true).slideDown();
         }
         return false;
@@ -300,51 +302,53 @@ $(function() {
                 data-item-url-external="<%=itemUrlExternal%>"
                 data-item-url-file="<%=itemUrlFile%>"
             >
-                <div class="dd-handle dd3-handle wmn-handle" title="<?php echo t('Move/Nest Item') ?>"><i class="fa fa-arrows"></i></div>
-                <div class="dd-content dd3-content wmn-content well">
-                    <h2>
+                <div class="dd-handle dd3-handle wmn-handle" title="<?php echo t('Move/Nest Item') ?>"><i class="fas fa-arrows-alt"></i></div>
+                <div class="dd-content dd3-content wmn-content well bg-light p-3">
+                    <h2 class="">
                         <span class="item-header"><%=_.escape(itemName)%></span>
-                        <a class="show-hide pull-right" title="<?php echo t('Click to Show/Hide fields') ?>"><i class="fa fa-chevron-down"></i></a>
-                        <a class="remove-item pull-right" title="<?php echo t('Click to Remove item') ?>"><i class="fa fa-remove"></i></a>
-                        <a class="clone-item pull-right" title="<?php echo t('Click to Clone item') ?>"><i class="fa fa-clone"></i></a>
+                        <a class="show-hide float-end" title="<?php echo t('Click to Show/Hide fields') ?>"><i class="fas fa-chevron-down"></i></a>
+                        <a class="remove-item float-end" title="<?php echo t('Click to Remove item') ?>"><i class="fas fa-times"></i></a>
+                        <a class="clone-item float-end" title="<?php echo t('Click to Clone item') ?>"><i class="far fa-clone"></i></a>
                     </h2>
                     <div class="form-options" style="display:none;">
                         <div class="form-group" >
-                            <label class="control-label"><?php echo t('Name'); ?></label>
+                            <label class="form-label"><?php echo t('Name'); ?></label>
                             <input class="form-control ccm-input-text item-name" type="text" name="itemName[]" value="<%=_.escape(itemName)%>" />
                         </div>
-                        <div class="form-group" >
-                            <label class="control-label">
+                        <div class="form-group">
+                            <label class="form-label">
                                 <?php echo t('URL') ?>
                                 <small class="text-muted"><?php echo t('Target (New Windows)') . " | " . t('Type') . " | " . t('URL') ?></small>
                             </label>
                             <div class="row">
 
-                                <div class="col-xs-2" style="padding-right:0px;">
+                                <div class="col-2" style="padding-right:0px;">
                                     <select data-field="item-url-new-window-select" name="itemUrlNewWindow[]" class="form-control" style="">
                                         <option value="0" <% if (itemUrlNewWindow == 0) { %>selected<% } %>><?php echo t('No') ?></option>
                                         <option value="1" <% if (itemUrlNewWindow == 1) { %>selected<% } %>><?php echo t('Yes') ?></option>
                                     </select>
                                 </div>
-                                <div class="col-xs-2" style="padding-right:0px;">
+                                <div class="col-2" style="padding-right:0px;">
                                     <select data-field="item-url-type-select" name="itemUrlType[]" class="form-control" style="">
                                         <option value="" <% if (!itemUrlType) { %>selected<% } %>>[ <?php echo t('None')?> ]</option>
                                         <option value="internal" <% if (itemUrlType == 'internal') { %>selected<% } %>><?php echo t('Internal') ?></option>
                                         <option value="external" <% if (itemUrlType == 'external') { %>selected<% } %>><?php echo t('External') ?></option>
+                                        <!--
                                         <option value="file" <% if (itemUrlType == 'file') { %>selected<% } %>><?php echo t('File') ?></option>
+                                        -->
                                     </select>
                                 </div>
-                                <div class="col-xs-8">
+                                <div class="col-8 ccm-url-container">
                                     <div style="display: none;" data-field="item-url-internal-container">
                                         <div data-field="item-url-internal-wrapper" class="item-url-internal-wrapper"></div>
-                                        <a class="btn btn-sm btn-default copy-page-title" title="<?php echo t('Copy page title to Name field') ?>"><i class="fa fa-mail-forward"></i></a>
+                                        <a class="btn btn-sm btn-outline-secondary copy-page-title" title="<?php echo t('Copy page title to Name field') ?>"><i class="fas fa-share-square"></i></a>
                                     </div>
                                     <div style="display: none;" data-field="item-url-external-container">
                                         <input type="text" name="itemUrlExternal[]" value="<%=itemUrlExternal%>" class="form-control" placeholder="http://">
                                     </div>
                                     <div style="display: none;" data-field="item-url-file-container">
                                         <div data-field="item-url-file-wrapper" class="item-url-file-wrapper ccm-file-selector"></div>
-                                        <a class="btn btn-sm btn-default copy-file-title" title="<?php echo t('Copy file title to Name field') ?>"><i class="fa fa-mail-forward"></i></a>
+                                        <a class="btn btn-sm btn-outline-secondary copy-file-title" title="<?php echo t('Copy file title to Name field') ?>"><i class="fas fa-share-square"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -367,6 +371,7 @@ $(function() {
  * Nestable
  * wmn: whale manual nav
  */
+#nestableContainer { padding-left: 0;}
 .dd {  }
 .dd-list .wmn-content { padding: 10px; margin-bottom: 5px; color: #555;}
 .dd-list .wmn-content a { color: #555;}
@@ -389,7 +394,7 @@ $(function() {
 }
 .dd-handle:hover { }
 
-.dd-item > button { display: block; position: relative; cursor: pointer; float: left; width: 25px; height: 30px; margin: 5px 0; padding: 0; text-indent: 100%; white-space: nowrap; overflow: hidden; border: 0; background: transparent; font-size: 16px; line-height: 1; text-align: center; font-weight: normal; }
+.dd-item > button { display: block; position: relative; cursor: pointer; float: left; width: 25px; height: 40px; margin: 5px 0; padding: 0; text-indent: 100%; white-space: nowrap; overflow: hidden; border: 0; background: transparent; font-size: 20px; line-height: 1; text-align: center; font-weight: normal; }
 .dd-item > button:before { content: '+'; display: block; position: absolute; width: 100%; text-align: center; text-indent: 0; }
 .dd-item > button[data-action="collapse"]:before { content: '-'; }
 
@@ -422,14 +427,15 @@ $(function() {
 .dd3-handle {
     position: absolute; margin: 0; left: 0; top: 0; cursor: pointer;
     width: 30px;
-    height: 38px;
-    line-height: 38px;
+    height: 50px;
+    line-height: 50px;
     text-align: center;
     white-space: nowrap; overflow: hidden;
-    border-right: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
+    border: 1px dashed rgba(256, 256, 256, 1);
+    /*border-right: 1px solid #ddd;*/
+    /*border-bottom: 1px solid #ddd;*/
     /*background: #ddd;*/
-    border-radius: 2px 0 0 2px;
+    /*border-radius: 2px 0 0 2px;*/
     font-size: 14px;
 }
 .dd3-handle:hover { background: #ddd; }
@@ -441,4 +447,6 @@ div.form-options { margin-top: 25px; }
 .item-url-file-wrapper div.ccm-file-selector-file-selected-thumbnail img { max-width: 20px!important;max-height: 20px!important; }
 .copy-page-title, .copy-file-title { position: absolute; top:0; right: 15px; line-height:1.75!important;}
 .ccm-page-selector { margin-top:0; } /** for 5.7 selector */
+.ccm-url-container { position: relative; }
+.btn.copy-page-title, .btn.copy-file-title { padding: .375rem 0.75rem;}
 </style>
