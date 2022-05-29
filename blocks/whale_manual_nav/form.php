@@ -212,7 +212,7 @@ $(function() {
     // expand/collapse items
     $('.dd').on('click', 'a.show-hide', function(e) {
         e.preventDefault();
-        var target = $(this).closest('div.well').find('.form-options');
+        var target = $(this).closest('div.wmn-content').find('.form-options');
         if (target.is(':visible')) {
             $(this).find('i').attr('class', 'fa fa-chevron-down');
             target.stop(true, true).slideUp();
@@ -291,7 +291,7 @@ $(function() {
 });
 </script>
 <script type="text/template" id="templateILOpen">
-            <li class="dd-item dd3-item"
+            <li class="dd-item dd3-item wmn-item"
                 data-id="<%=itemID%>"
                 data-item-name="<%=_.escape(itemName)%>"
                 data-item-url-new-window="<%=itemUrlNewWindow%>"
@@ -300,8 +300,8 @@ $(function() {
                 data-item-url-external="<%=itemUrlExternal%>"
                 data-item-url-file="<%=itemUrlFile%>"
             >
-                <div class="dd-handle dd3-handle" title="<?php echo t('Move/Nest Item') ?>"><i class="fa fa-arrows"></i></div>
-                <div class="dd-content dd3-content well">
+                <div class="dd-handle dd3-handle wmn-handle" title="<?php echo t('Move/Nest Item') ?>"><i class="fa fa-arrows"></i></div>
+                <div class="dd-content dd3-content wmn-content well">
                     <h2>
                         <span class="item-header"><%=_.escape(itemName)%></span>
                         <a class="show-hide pull-right" title="<?php echo t('Click to Show/Hide fields') ?>"><i class="fa fa-chevron-down"></i></a>
@@ -365,13 +365,13 @@ $(function() {
 <style type="text/css">
 /**
  * Nestable
+ * wmn: whale manual nav
  */
-
 .dd {  }
-.dd-list .well { padding: 10px; margin-bottom: 5px; color: #555;}
-.dd-list .well a { color: #555;}
-.dd-list .well h2, .dd-dragl .well h2 { margin-top: 0px!important; margin-bottom: 0px!important; font-size: 15px!important; font-weight: bold; padding-left: 30px;}
-.dd-list .well h2 .item-header { color: #555; display: inline-table;}
+.dd-list .wmn-content { padding: 10px; margin-bottom: 5px; color: #555;}
+.dd-list .wmn-content a { color: #555;}
+.dd-list .wmn-content h2, .dd-dragl .wmn-content h2 { margin-top: 0px!important; margin-bottom: 0px!important; font-size: 15px!important; font-weight: bold; padding-left: 30px;}
+.dd-list .wmn-content h2 .item-header { color: #555; display: inline-table;}
 .dd-list .nest-item { cursor:ew-resize; margin-right: 5px;}
 .dd-list .clone-item, .dd-list .remove-item, .dd-list .show-hide { cursor:pointer; margin-left: 5px;}
 .dd-list hr, .dd-dragl hr { margin: 15px 0 15px 0!important; }
@@ -389,7 +389,7 @@ $(function() {
 }
 .dd-handle:hover { }
 
-.dd-item > button { display: block; position: relative; cursor: pointer; float: left; width: 25px; height: 25px; margin: 5px 0; padding: 0; text-indent: 100%; white-space: nowrap; overflow: hidden; border: 0; background: transparent; font-size: 12px; line-height: 1; text-align: center; font-weight: bold; }
+.dd-item > button { display: block; position: relative; cursor: pointer; float: left; width: 25px; height: 30px; margin: 5px 0; padding: 0; text-indent: 100%; white-space: nowrap; overflow: hidden; border: 0; background: transparent; font-size: 16px; line-height: 1; text-align: center; font-weight: normal; }
 .dd-item > button:before { content: '+'; display: block; position: absolute; width: 100%; text-align: center; text-indent: 0; }
 .dd-item > button[data-action="collapse"]:before { content: '-'; }
 
