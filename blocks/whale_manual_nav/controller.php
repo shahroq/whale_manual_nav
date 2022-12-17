@@ -52,8 +52,7 @@ class Controller extends BlockController
     {
         $jh = $this->app->make('helper/json');
         
-        $navItemsAr = ($this->navItems) ? $jh->decode($this->navItems) : array();
-        if (!is_array($navItemsAr)) $navItemsAr = array();
+        $navItemsAr = !isset($this->navItems) || !$this->navItems ? array() : $jh->decode($this->navItems);
 
         // reindex ids
         $navItemsAr = $this->reindexNavItems($navItemsAr);
