@@ -7,7 +7,7 @@ $jh = $app->make('helper/json');
 
 <div class="ccm-tab-content" id="ccm-tab-content-mega-menu-menu" style="display: block">
 
-    <input type='hidden' id='navItems' name='navItems' value='<?php echo h($navItems) ?>'>
+    <input type='hidden' id='navItems' name='navItems' value='<?php echo isset($navItems) ? h($navItems) : "[]" ?>'>
 
     <div style="margin-bottom: 20px;">
         <a class="btn btn-success btn-sm pull-right ccm-add-menu-item">
