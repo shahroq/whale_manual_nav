@@ -154,13 +154,7 @@ class Controller extends BlockController
         $parentCIDnotZero = true;
         $inspectC = Page::getCurrentPage();
 
-        if (version_compare(\Config::get('concrete.version'), '8.0', '>=')) {
-            // v8+
-            $homePageID = $inspectC->getSiteHomePageID();
-        } else {
-            // v7
-            $homePageID = HOME_CID;
-        }
+        $homePageID = $inspectC->getSiteHomePageID();
 
         while ($parentCIDnotZero) {
             $cParentID = $inspectC->getCollectionParentID();

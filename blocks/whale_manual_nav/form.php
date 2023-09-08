@@ -257,13 +257,7 @@ $(function() {
     // copy selected internal page title to name field
     $('.dd').on('click', 'a.copy-page-title', function(e) {
         e.preventDefault();
-        <?php if (version_compare(\Config::get('concrete.version'), '8.0', '>=')) { ?>
-            // v8+
-            name = $(this).closest('.dd-item').find('>.dd-content .ccm-item-selector-item-selected-title').text();
-        <?php } else { ?>
-            // v7
-            name = $(this).closest('.dd-item').find('>.dd-content .ccm-page-selector-page-selected-title').text();
-        <?php } ?>
+        name = $(this).closest('.dd-item').find('>.dd-content .ccm-item-selector-item-selected-title').text();
         $(this).closest('.dd-item').find('.item-name').first().val(name);
         updateNavField($('.dd'));
         updateHeader($(this).closest('.dd-item'));
