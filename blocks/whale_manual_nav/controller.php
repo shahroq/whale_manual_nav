@@ -25,6 +25,8 @@ class Controller extends BlockController
     protected $cIDCurrent;
     protected $selectedPathCIDs;
 
+    public $navItems;
+        
     public function getBlockTypeName()
     {
         return t("Nestable Manual Nav");
