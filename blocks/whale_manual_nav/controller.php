@@ -34,7 +34,7 @@ class Controller extends BlockController
 
     public function getBlockTypeDescription()
     {
-        return t("Whale Manual Nav");
+        return t("Whale Manual Nav provides a navigation tree compatible with the core Autonav block, so can use block templates developed for the core Autonav block.");
     }
 
     public function add()
